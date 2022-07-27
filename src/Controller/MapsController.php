@@ -65,7 +65,7 @@ class MapsController extends AbstractController
         ];
 
         return $this->render(
-            'Maps/userMap.html.twig',
+            'Maps/index.html.twig',
             [
                 'markers' => json_encode($this->getMarkers($initialFilters)),
                 'filters' => $initialFilters,
