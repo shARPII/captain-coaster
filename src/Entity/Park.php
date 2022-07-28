@@ -114,6 +114,13 @@ class Park
     private $qualityScore;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=14, scale=11, nullable=true)
+     */
+    private $strengthScore;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -353,6 +360,18 @@ class Park
     public function setQualityScore(?string $qualityScore): self
     {
         $this->qualityScore = $qualityScore;
+
+        return $this;
+    }
+
+    public function getStrengthScore(): ?string
+    {
+        return $this->strengthScore;
+    }
+
+    public function setStrengthScore(?string $strengthScore): self
+    {
+        $this->strengthScore = $strengthScore;
 
         return $this;
     }

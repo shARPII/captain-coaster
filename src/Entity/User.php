@@ -170,6 +170,27 @@ class User extends BaseUser
     private $addTodayDateWhenRating = 0;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private $shouldUpdateUserScore = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=14, scale=11, nullable=true)
+     */
+    private $qualityScore;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=14, scale=11, nullable=true)
+     */
+    private $strengthScore;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -711,5 +732,56 @@ class User extends BaseUser
     public function isAddTodayDateWhenRating(): bool
     {
         return $this->addTodayDateWhenRating;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getEmailNotification(): ?bool
+    {
+        return $this->emailNotification;
+    }
+
+    public function getAddTodayDateWhenRating(): ?bool
+    {
+        return $this->addTodayDateWhenRating;
+    }
+
+    public function getShouldUpdateUserScore(): ?bool
+    {
+        return $this->shouldUpdateUserScore;
+    }
+
+    public function setShouldUpdateUserScore(bool $shouldUpdateUserScore): self
+    {
+        $this->shouldUpdateUserScore = $shouldUpdateUserScore;
+
+        return $this;
+    }
+
+    public function getQualityScore(): ?string
+    {
+        return $this->qualityScore;
+    }
+
+    public function setQualityScore(?string $qualityScore): self
+    {
+        $this->qualityScore = $qualityScore;
+
+        return $this;
+    }
+
+    public function getStrengthScore(): ?string
+    {
+        return $this->strengthScore;
+    }
+
+    public function setStrengthScore(?string $strengthScore): self
+    {
+        $this->strengthScore = $strengthScore;
+
+        return $this;
     }
 }

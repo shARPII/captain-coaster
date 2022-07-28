@@ -79,7 +79,7 @@
 
       // Adds markers to the map.
       markers.forEach(function(park) {
-        options['borderColor'] = hsl2hex(park['qualityScore'] * 1.2, 50, 50);
+        options['borderColor'] = hsl2hex(park['strengthScore'], 50, 50);
 
         var marker = L.marker([park['latitude'], park['longitude']], {icon : L.BeautifyIcon.icon(options)}).setBouncingOptions({
           bounceHeight : 3,

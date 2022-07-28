@@ -83,7 +83,9 @@ class RatingCoasterController extends AbstractController
             return new JsonResponse(['state' => 'error']);
         }
 
+        $user->setShouldUpdateUserScore(true);
         $em->persist($rating);
+        $em->persist($user);
         $em->flush();
 
         return new JsonResponse(['state' => 'success']);
