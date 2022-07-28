@@ -68,6 +68,7 @@ class CoasterRepository extends \Doctrine\ORM\EntityRepository
             ->addSelect('p.longitude as longitude')
             ->addSelect('count(1) as nb')
             ->addSelect('p.id as id')
+            ->addSelect('p.qualityScore as qualityScore')
             ->from('App:Coaster', 'c')
             ->innerJoin('c.park', 'p', 'WITH', 'c.park = p.id')
             ->leftJoin('c.manufacturer', 'm', 'WITH', 'c.manufacturer = m.id')
