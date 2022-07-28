@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -104,6 +105,13 @@ class Park
      * @ORM\Column(type="boolean")
      */
     private $enabled = false;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="decimal", precision=14, scale=11, nullable=true)
+     */
+    private $qualityScore;
 
     /**
      * Constructor
@@ -330,5 +338,22 @@ class Park
     public function isEnabled(): bool
     {
         return $this->enabled;
+    }
+
+    public function getEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function getQualityScore(): ?string
+    {
+        return $this->qualityScore;
+    }
+
+    public function setQualityScore(?string $qualityScore): self
+    {
+        $this->qualityScore = $qualityScore;
+
+        return $this;
     }
 }
