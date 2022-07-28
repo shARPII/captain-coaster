@@ -59,43 +59,12 @@ class ParkRankingCommand extends Command
 
         if ($input->getOption('output')) {
             foreach ($result as $park) {
-                $output->writeln($this->formatMessage($park));
+                $output->writeln($park->getName() . ' => quality score : ' . $park->getQualityScore());
             }
         }
 
         $output->writeln(count($result).' parks updated.');
-        foreach($result as $res) {
-            $output->writeln($res->getName() . ' => quality score : ' . $res->getQualityScore());
-        }
-
-
         $output->writeln((string)$stopwatch->stop('parkRanking'));
         $output->writeln('Dry-run: '.$dryRun);
-    }
-
-    /**
-     * @param Coaster $coaster
-     * @return string
-     */
-    private function formatMessage(Coaster $coaster): string
-    {
-        $format = '[%s] %s - %s (%s) %s updated.';
-
-        if (is_null($coaster->getPreviousRank())) {
-            $format = '[%s] <error>%s</error> - %s (%s) %s updated.';
-        } elseif (abs($coaster->getRank() - $coaster->getPreviousRank()) > 0.25 * $coaster->getPreviousRank()) {
-            $format = '[%s] <comment>%s</comment> - %s (%s) %s updated.';
-        } elseif (abs($coaster->getRank() - $coaster->getPreviousRank()) > 0.1 * $coaster->getPreviousRank()) {
-            $format = '[%s] <info>%s</info> - %s (%s) %s updated.';
-        }
-
-        return sprintf(
-            $format,
-            $coaster->getRank(),
-            $coaster->getName(),
-            $coaster->getPark()->getName(),
-            $coaster->getPreviousRank() ?? 'new',
-            number_format($coaster->getScore(), 2)
-        );
     }
 }
