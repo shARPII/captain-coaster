@@ -1,0 +1,20 @@
+{% import _self as coastershape %}
+
+<svg width="823" height="400">
+    <g transform="translate(15, 0)">
+        {% set counter = 1 %}
+        {% for i in 0..heatmapInfo.rows-1 %}
+            <g transform="translate(0, {{ i * 65 }})">
+                {% for j in 0..heatmapInfo.columns-1 %}
+                    {% if heatmapData['pos'~counter] is defined %}
+                        <rect width="60" height="60" fill="rgba(0,230,64,{{ heatmapData['pos'~counter]/countTotal }})" x="{{ j * 65 }}" y="65" class="ContributionCalendar-day" rx="2" ry="2" style="outline: 1px solid rgba(27,31,35,0.06); outline-offset: -1px;" onclick="vote({{ counter }});"></rect>
+                        {% else %}
+                        <rect width="60" height="60" fill="#ebedf0" x="{{ j * 65 }}" y="65" class="ContributionCalendar-day" rx="2" ry="2" style="outline: 1px solid rgba(27,31,35,0.06); outline-offset: -1px;" onclick="vote({{ counter }});"></rect>
+                    {% endif %}
+                    {% set counter = counter + 1 %}
+                {% endfor %}
+            </g>
+        {% endfor %}
+
+    </g>
+</svg>

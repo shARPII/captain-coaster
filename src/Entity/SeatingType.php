@@ -7,10 +7,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Status
+ * SeatingType
  *
  * @ORM\Table(name="seating_type")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\SeatingTypeRepository")
  */
 class SeatingType
 {
@@ -38,6 +38,27 @@ class SeatingType
      * @Gedmo\Slug(fields={"name"})
      */
     private $slug;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $displayHeatmap = false;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $lines;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $columns;
 
     /**
      * @return string
@@ -103,5 +124,41 @@ class SeatingType
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    public function getDisplayHeatmap(): ?bool
+    {
+        return $this->displayHeatmap;
+    }
+
+    public function setDisplayHeatmap(bool $displayHeatmap): self
+    {
+        $this->displayHeatmap = $displayHeatmap;
+
+        return $this;
+    }
+
+    public function getLines(): ?int
+    {
+        return $this->lines;
+    }
+
+    public function setLines(?int $lines): self
+    {
+        $this->lines = $lines;
+
+        return $this;
+    }
+
+    public function getColumns(): ?int
+    {
+        return $this->columns;
+    }
+
+    public function setColumns(?int $columns): self
+    {
+        $this->columns = $columns;
+
+        return $this;
     }
 }

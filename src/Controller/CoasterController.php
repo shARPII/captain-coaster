@@ -3,14 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Coaster;
+use App\Entity\FavoritePlaceCoaster;
 use App\Entity\Image;
 use App\Entity\LikedImage;
 use App\Entity\RiddenCoaster;
+use App\Entity\SeatingType;
 use App\Form\Type\ImageUploadType;
+use App\Repository\FavoritePlaceCoasterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -155,6 +159,21 @@ class CoasterController extends AbstractController
             );
         }
 
+        $heatmapData = $this->getDoctrine()
+            ->getRepository(FavoritePlaceCoaster::class)
+            ->getHeatMapData($coaster);
+
+        $countTotal = array_sum(array_column($heatmapData, 'num'));
+
+        $heatmapDataRefined = [];
+        foreach($heatmapData as $k=>$v) {
+            $heatmapDataRefined['pos'.$v['place']] = $v['num'];
+        }
+
+        $heatmapInfo = $this->getDoctrine()
+            ->getRepository(SeatingType::class)
+            ->getHeatMapInfo($coaster);
+
         return $this->render(
             'Coaster/show.html.twig',
             [
@@ -162,7 +181,36 @@ class CoasterController extends AbstractController
                 'reviews' => $reviews,
                 'rating' => $rating,
                 'user' => $user,
+                'heatmapData' => $heatmapDataRefined,
+                'heatmapInfo' => $heatmapInfo,
+                'countTotal' => $countTotal
             ]
         );
+    }
+
+    /**
+     * Rate a coaster or edit a rating
+     *
+     * @param Request $request
+     * @param Coaster $coaster
+     * @param EntityManagerInterface $em
+     * @return JsonResponse
+     *
+     * @Route(
+     *     "/coasters/{id}/votePlace",
+     *     name="votePlaceCoaster",
+     *     methods={"POST"},
+     *     options = {"expose" = true},
+     *     condition="request.isXmlHttpRequest()"
+     * )
+     * @Security("is_granted('ROLE_USER')")
+     * @throws \Exception
+     */
+    public function votePlaceCoaster(Request $request, Coaster $coaster, EntityManagerInterface $em)
+    {
+        $this->denyAccessUnlessGranted('rate', $coaster);
+
+        $em->getRepository(FavoritePlaceCoaster::class)->addOrUpdate($coaster, $this->getUser(), $request->get('value'));
+        return new JsonResponse(['state' => 'success']);
     }
 }

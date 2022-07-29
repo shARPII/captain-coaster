@@ -275,9 +275,11 @@
     </div>
     <div class="col-sm-9">
       <div id="coaster-photos" class="row"></div>
+
       {% if reviews|length > 0 %}
         {% include 'Coaster/reviews.html.twig' with {'reviews': reviews, 'coaster': coaster} only %}
       {% endif %}
+        {% include 'Coaster/Graph/coastershape.svg.twig' with {'heatmapData': heatmapData, 'heatmapInfo': heatmapInfo, 'countTotal': countTotal} only %}
     </div>
   </div>
 {% endblock %}
@@ -331,6 +333,19 @@
       };
 
       loadImage();
+
+
+      function vote(position) {
+          var url = Routing.generate(
+              'votePlaceCoaster',
+              {'id': {{ coaster.id }}, '_locale': locale}
+          );
+
+          $.post(url, {value: position}, function (response) {
+          }, 'JSON').done(function () {
+              alert('ok');
+          });
+      }
   </script>
   {% include 'Coaster/rating-json-ld.html.twig' with {'coaster': coaster} only %}
 {% endblock %}
