@@ -10,13 +10,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'users')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public function __construct()
     {
@@ -47,6 +50,9 @@ class User implements UserInterface
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: false, unique: true)]
     private string $email;
+
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $password = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $lastName = null;
@@ -117,6 +123,9 @@ class User implements UserInterface
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => 0])]
     private bool $enabled = false;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
 
     public function __toString(): string
     {
@@ -196,6 +205,18 @@ class User implements UserInterface
     public function setFirstName($firstName): static
     {
         $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
 
         return $this;
     }
@@ -483,5 +504,17 @@ class User implements UserInterface
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
     }
 }

@@ -40,3 +40,4 @@ phpstan.neon
 /.idea/
 .php_cs.cache
 .php-cs-fixer.cache
+.vscode/launch.json

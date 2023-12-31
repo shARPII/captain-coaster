@@ -181,6 +181,9 @@ login:
     already_connected_as: 'Ya ha iniciado sesión como'
     logout: '¿ Cerrar sesión ?'
 
+register:
+    title: 'S'enregistrer'
+
 contact:
     title: 'Estar en contacto'
     send: 'Envía el mensaje'

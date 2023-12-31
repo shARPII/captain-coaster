@@ -291,6 +291,9 @@ login:
     already_connected_as: 'Déjà connecté en tant que'
     logout: 'Se deconnecter ?'
 
+register:
+    title: 'S''enregistrer'
+
 contact:
     title: 'Nous contacter'
     send: 'Envoyer le message'

@@ -289,6 +289,9 @@ login:
     already_connected_as: 'Already logged in as'
     logout: 'Logout ?'
 
+register:
+    title: 'Register'
+
 contact:
     title: 'Get in touch'
     send: 'Send the message'

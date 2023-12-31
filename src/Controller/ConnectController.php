@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkNotification;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * Controller in charge of authentication routes.
@@ -39,7 +40,22 @@ class ConnectController extends AbstractController
             );
         }
 
-        return $this->render('connect/login.html.twig');
+        return $this->render('connect/login.html.twig', ['last_username' => '', 'error' => '']);
+    }
+
+    #[Route(path: '/login_cc', name: 'login_cc', methods: ['POST'])]
+    public function loginCC(AuthenticationUtils $authenticationUtils): Response
+    {
+        // if ($this->getUser()) {
+        //     return $this->redirectToRoute('target_path');
+        // }
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('connect/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     public function loginCheck(): void
