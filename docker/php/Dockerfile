@@ -6,7 +6,7 @@ RUN apk add --no-cache git
 # Install PHP extensions
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions apcu gd imagick opcache redis zip intl pdo_mysql xsl
+RUN install-php-extensions apcu gd imagick opcache redis zip intl pdo_mysql xsl xdebug
 
 RUN wget https://cs.symfony.com/download/php-cs-fixer-v3.phar -O php-cs-fixer  \
     && chmod a+x php-cs-fixer \
